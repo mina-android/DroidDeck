@@ -1,0 +1,52 @@
+# Kotlin & Java / Built & IDE files
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+bin/
+gen/
+out/
+release/
+hs_err_pid*
+replay_pid*
+
+# Gradle & Kotlin compiler caches (hidden & build dirs)
+.gradle/
+.kotlin/
+build/
+**/build/
+local.properties
+
+# Android Studio / IntelliJ IDEA (hidden & project metadata)
+*.iml
+.idea/
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Keystores & signing secrets
+*.jks
+*.keystore
+key.properties
+
+# Hidden OS, Editor & Tooling artifacts
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.vscode/
+.fleet/
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~

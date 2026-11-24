@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DroidDeck</string>
+    <string name="notification_listener_label">DroidDeck Dashboard</string>
+    <string name="channel_working_hours_name">Working Hours Monitor</string>
+    <string name="channel_working_hours_desc">Silent service that opens DroidDeck when the screen locks during configured working hours.</string>
+    <string name="working_hours_notification_title">DroidDeck Working Hours Active</string>
+    <string name="working_hours_notification_text">Auto-launch is armed for your scheduled working hours.</string>
+</resources>

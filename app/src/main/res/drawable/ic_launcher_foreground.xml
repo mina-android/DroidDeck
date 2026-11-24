@@ -1,0 +1,89 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:scaleX="0.62"
+        android:scaleY="0.62">
+
+    <!-- 3D Soft Drop Shadow Base -->
+    <path
+        android:fillColor="#55000000"
+        android:pathData="M24,33 C24,28.58 27.58,25 32,25 L76,25 C80.42,25 84,28.58 84,33 L84,79 C84,83.42 80.42,87 76,87 L32,87 C27.58,87 24,83.42 24,79 Z" />
+
+    <!-- 3D Raised Material 3 Desk Stand Slab -->
+    <path android:pathData="M23,30 C23,25.58 26.58,22 31,22 L77,22 C81.42,22 85,25.58 85,30 L85,74 C85,78.42 81.42,82 77,82 L31,82 C26.58,82 23,78.42 23,74 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="85"
+                android:endY="82"
+                android:startX="23"
+                android:startY="22"
+                android:type="linear">
+                <item android:color="#FF252A34" android:offset="0.0" />
+                <item android:color="#FF12141A" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Pure OLED Inner Display Panel -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M28,32 C28,29.79 29.79,28 32,28 L76,28 C78.21,28 80,29.79 80,32 L80,72 C80,74.21 78.21,76 76,76 L32,76 C29.79,76 28,74.21 28,72 Z" />
+
+    <!-- Top Bevel Specular Highlight -->
+    <path
+        android:fillColor="#26FFFFFF"
+        android:pathData="M31,22 L77,22 C81.42,22 85,25.58 85,30 L85,31 C85,26.58 81.42,23 77,23 L31,23 C26.58,23 23,26.58 23,31 L23,30 C23,25.58 26.58,22 31,22 Z" />
+
+    <!-- 3D AOD Clock Bar Accent (Cyan Material 3 Pill) -->
+    <path android:pathData="M34,37 C34,35.34 35.34,34 37,34 L57,34 C58.66,34 60,35.34 60,37 L60,41 C60,42.66 58.66,44 57,44 L37,44 C35.34,44 34,42.66 34,41 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="60"
+                android:endY="44"
+                android:startX="34"
+                android:startY="34"
+                android:type="linear">
+                <item android:color="#FFB2EBF2" android:offset="0.0" />
+                <item android:color="#FF4DD0E1" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Notification Pill Line -->
+    <path
+        android:fillColor="#FF8E99A8"
+        android:pathData="M34,51 C34,49.9 34.9,49 36,49 L52,49 C53.1,49 54,49.9 54,51 C54,52.1 53.1,53 52,53 L36,53 C34.9,53 34,52.1 34,51 Z" />
+
+    <!-- Secondary Media Bar -->
+    <path
+        android:fillColor="#FF4F5866"
+        android:pathData="M34,60 C34,58.9 34.9,58 36,58 L48,58 C49.1,58 50,58.9 50,60 C50,61.1 49.1,62 48,62 L36,62 C34.9,62 34,61.1 34,60 Z" />
+
+    <!-- 3D Play Control Floating Circle -->
+    <path android:pathData="M66,57 m-9,0 a9,9 0 1,0 18,0 a9,9 0 1,0 -18,0">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="75"
+                android:endY="66"
+                android:startX="57"
+                android:startY="48"
+                android:type="linear">
+                <item android:color="#FF80DEEA" android:offset="0.0" />
+                <item android:color="#FF0097A7" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Play Triangle -->
+    <path
+        android:fillColor="#FF000000"
+        android:pathData="M63.5,52.5 L63.5,61.5 L70.5,57 Z" />
+    </group>
+</vector>
