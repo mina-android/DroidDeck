@@ -38,6 +38,10 @@ captures/
 *.keystore
 key.properties
 
+# Local AI instruction files
+AI_INSTRUCTIONS.md
+GEMINI.md
+
 # Hidden OS, Editor & Tooling artifacts
 .DS_Store
 .AppleDouble
