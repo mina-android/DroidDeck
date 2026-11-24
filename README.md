@@ -163,9 +163,7 @@ Contributions that improve stability, fix reproducible bugs, or improve document
 
 This project is authored and maintained by **mina-android**, focused on developing transparent, local-first utilities and privacy-conscious software.
 
-- **Developer Portfolio**: [portfolio.minaashraf285.workers.dev](https://portfolio.minaashraf285.workers.dev/)
-- **GitHub Profile**: [github.com/mina-android](https://github.com/mina-android)
-- **Issue Tracker**: [github.com/mina-android/DroidDeck/issues](https://github.com/mina-android/DroidDeck/issues)
+[![Portfolio](https://img.shields.io/badge/Portfolio-mina--android-181717?style=flat&logo=cloudflare&logoColor=white)](https://portfolio.minaashraf285.workers.dev/) [![GitHub](https://img.shields.io/badge/GitHub-mina--android-181717?style=flat&logo=github&logoColor=white)](https://github.com/mina-android) [![Issues](https://img.shields.io/badge/Issues-Report%20a%20Bug-181717?style=flat&logo=github&logoColor=white)](https://github.com/mina-android/DroidDeck/issues)
 
 ---
 
@@ -173,8 +171,7 @@ This project is authored and maintained by **mina-android**, focused on developi
 
 Development and maintenance of this software are independent and self-supported. If this project helps you in your workflow, consider supporting development:
 
-- **PayPal**: [paypal.me/minaashraf285](https://paypal.me/minaashraf285)
-- **GitHub Sponsors**: [github.com/sponsors/mina-android](https://github.com/sponsors/mina-android)
+[![PayPal](https://img.shields.io/badge/PayPal-Donate-00457C?style=flat&logo=paypal&logoColor=white)](https://paypal.me/minaashraf285) [![GitHub Sponsors](https://img.shields.io/badge/GitHub%20Sponsors-Sponsor-EA4AAA?style=flat&logo=githubsponsors&logoColor=white)](https://github.com/sponsors/mina-android) [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?style=flat&logo=kofi&logoColor=white)](https://ko-fi.com/minaashraf285)
 
 ---
 
