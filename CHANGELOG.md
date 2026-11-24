@@ -21,7 +21,7 @@ All notable changes to **DroidDeck** (`com.ma.droiddeck`) are documented in this
 
 ### Changed
 - Renamed application, package (`com.ma.droiddeck`), symbols (`DroidDeck*`), DataStore (`droiddeck_settings`), notification channel (`droiddeck_working_hours`), backup filename (`droiddeck_backup.json`), and GitHub repository links to **DroidDeck**.
-- Aligned `README.md` with the universal README template specification (`style=flat` badges, pinned developer/donate links, zero emojis).
+- Aligned `README.md` with the universal README template specification (`style=flat` badges, `Android 8.0+` Platform & `Jetpack Compose` Framework badges, pinned developer/donate links, zero emojis) and updated `assets/logo.png` to the transparent adaptive icon foreground.
 - Pinned `IncomingCallBanner` and `OngoingCallBanner` directly above `ClockSection` in both Portrait and Landscape.
 - Matched `CalendarWidgetCard` event start times to `use24HourFormat` and formatted countdowns in hours and minutes.
 - Made `MusicControlCard` more compact with slimmer custom song and volume seekbars (`CompactSeekbar`).

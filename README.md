@@ -10,7 +10,7 @@ README UNIVERSAL TEMPLATE SPECIFICATION & APPLIED RULES
 
 # DroidDeck
 
-[![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B-grey.svg?style=flat)](https://developer.android.com/about/versions/oreo) [![Framework](https://img.shields.io/badge/Kotlin-Jetpack%20Compose-02569B.svg?style=flat&logo=kotlin&logoColor=white)](https://kotlinlang.org/) [![Release](https://img.shields.io/badge/Release-v1.0.0-blue.svg?style=flat)](https://github.com/mina-android/DroidDeck/releases) [![License](https://img.shields.io/badge/License-GPL--3.0-black.svg?style=flat)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B-3DDC84.svg?style=flat&logo=android&logoColor=white)](https://developer.android.com/about/versions/oreo) [![Framework](https://img.shields.io/badge/Framework-Jetpack%20Compose-4285F4.svg?style=flat&logo=jetpackcompose&logoColor=white)](https://developer.android.com/compose) [![Release](https://img.shields.io/badge/Release-v1.0.0-blue.svg?style=flat)](https://github.com/mina-android/DroidDeck/releases) [![License](https://img.shields.io/badge/License-GPL--3.0-black.svg?style=flat)](LICENSE)
 
 <p align="center">
   An Always-On Display (AOD) desk dashboard and control center for Android. Built natively in Kotlin and Jetpack Compose with a strict #000000 pure-black OLED interface, adaptive portrait/landscape layouts, media controls, notification pills, incoming and ongoing call handling, and working-hours lockscreen automation.
