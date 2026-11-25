@@ -22,7 +22,7 @@ README UNIVERSAL TEMPLATE SPECIFICATION & APPLIED RULES
 
 ## Navigation
 
-[Features](#features) &bull; [Screenshots](#screenshots) &bull; [Downloads](#downloads) &bull; [Self Building & Local Setup](#self-building--local-setup) &bull; [Frequently Asked Questions](#frequently-asked-questions) &bull; [Contribution](#contribution) &bull; [About the Developer](#about-the-developer) &bull; [Donate](#donate) &bull; [License](#license)
+[Features](#features) &bull; [Screenshots](#screenshots) &bull; [Downloads](#downloads) &bull; [Self Building & Local Setup](#self-building--local-setup) &bull; [Contribution](#contribution) &bull; [About the Developer](#about-the-developer) &bull; [Donate](#donate) &bull; [License](#license)
 
 ---
 
@@ -114,22 +114,6 @@ Compiled binaries will be generated inside `app/build/outputs/apk/`.
 # Connect a target device/emulator via ADB, then install and launch
 ./gradlew installDebug
 ```
-
----
-
-## Frequently Asked Questions
-
-#### Where does the application store its settings and database?
-All user preferences (clock style, font family, accent theme, widget order, working-hours schedule, and OLED protection settings) are stored locally in Android private app storage via Jetpack DataStore (`files/datastore/droiddeck_settings.preferences_pb`).
-
-#### Does this application collect telemetry or connect to external servers?
-No telemetry, usage metrics, or error tracking packages are active. Outbound network requests only occur when a city is configured in the Weather widget (querying Open-Meteo without GPS or user identifiers).
-
-#### Can I run multiple instances concurrently?
-`MainActivity` is configured with `android:launchMode="singleTop"` so Quick Settings tile taps and Working Hours auto-launch intents reuse the existing dashboard instance without spawning duplicate tasks.
-
-#### How do I perform a complete data reset?
-Open Android **Settings > Apps > DroidDeck > Storage & cache** and select **Clear storage**, or uninstall and reinstall the application.
 
 ---
 

@@ -4,6 +4,9 @@ All notable changes to **DroidDeck** (`com.ma.droiddeck`) are documented in this
 
 ## [1.1.0] - 2026-11-25
 
+### Changed
+- **README & GitHub Releases**: Removed the Frequently Asked Questions section and navigation link from `README.md` to match `README_TEMPLATE.md`, and aligned all GitHub release notes (`v1.0.0`–`v1.1.0`) with the `IT-Box` release note format.
+
 ### Added
 - **Car Mode Button (`StatusHeader`)**: Session-only Car Mode pill in `StatusHeader` that forces screen brightness to maximum (`1.0f`), overriding auto-dim, temporary tap-brighten, idle burn-in alpha dimming, and proximity blanking, and resets to off when the app closes.
 - **Sound-Preserving Popup-Hiding DND Mode (`DndPolicyHelper`, `MainActivity`)**: Upgraded `Suppress System Heads-Up Popups` (`suppressHeadsUpWhileActive`) to activate `NotificationManager.INTERRUPTION_FILTER_PRIORITY` with a sound-preserving `NotificationManager.Policy` (allowing Calls, Messages, Conversations, Events, Reminders, Alarms, Media, and System sounds while suppressing peek banners, full-screen intents, and ambient popups). Notifications continue to display in-app normally, the `StatusHeader` DND button reflects only user-enabled quiet DND, and the special mode automatically turns off and restores the prior system DND filter/policy when DroidDeck closes or backgrounds.
