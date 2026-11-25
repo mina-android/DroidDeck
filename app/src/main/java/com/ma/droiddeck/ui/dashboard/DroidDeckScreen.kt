@@ -95,6 +95,7 @@ fun DroidDeckScreen(
     onRefreshWeather: (String) -> Unit,
     onLaunchQuickApp: (String) -> Unit,
     onToggleDnd: () -> Unit,
+    onToggleCarMode: () -> Unit,
     onCycleRingerMode: () -> Unit,
     onToggleRotate: () -> Unit,
     onResetAutoRotate: () -> Unit,
@@ -119,8 +120,8 @@ fun DroidDeckScreen(
     onImportBackup: () -> Unit,
     onOpenUrl: (String) -> Unit
 ) {
-    // Proximity blanking: render 100% pure black when covered
-    if (uiState.settings.proximityBlankingEnabled && uiState.isProximityCovered) {
+    // Proximity blanking: render 100% pure black when covered (unless Car Mode is active)
+    if (!uiState.isCarModeEnabled && uiState.settings.proximityBlankingEnabled && uiState.isProximityCovered) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -142,7 +143,7 @@ fun DroidDeckScreen(
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     val (shiftX, shiftY) = uiState.pixelShiftDp
-    val contentAlpha = if (uiState.settings.antiBurnInDimmingEnabled && uiState.isIdleBurnInDimmed) {
+    val contentAlpha = if (!uiState.isCarModeEnabled && uiState.settings.antiBurnInDimmingEnabled && uiState.isIdleBurnInDimmed) {
         0.72f
     } else {
         1.0f
@@ -168,6 +169,11 @@ fun DroidDeckScreen(
         ) {
             StatusHeader(
                 status = uiState.deviceStatus,
+                isCarModeEnabled = uiState.isCarModeEnabled,
+                onToggleCarMode = {
+                    onUserInteraction()
+                    onToggleCarMode()
+                },
                 onToggleDnd = {
                     onUserInteraction()
                     onToggleDnd()

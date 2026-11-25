@@ -21,6 +21,7 @@ import androidx.compose.material.icons.rounded.BatteryChargingFull
 import androidx.compose.material.icons.rounded.BatteryFull
 import androidx.compose.material.icons.rounded.Bluetooth
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.DirectionsCar
 import androidx.compose.material.icons.rounded.DoNotDisturbOff
 import androidx.compose.material.icons.rounded.DoNotDisturbOn
 import androidx.compose.material.icons.rounded.ScreenRotation
@@ -55,6 +56,8 @@ import java.util.Locale
 @Composable
 fun StatusHeader(
     status: DeviceStatusState,
+    isCarModeEnabled: Boolean,
+    onToggleCarMode: () -> Unit,
     onToggleDnd: () -> Unit,
     onCycleRingerMode: () -> Unit,
     onToggleRotate: () -> Unit,
@@ -140,11 +143,46 @@ fun StatusHeader(
             }
         }
 
-        // Right: Dedicated DND Pill, Sound/Vibrate/Mute Pill, Rotate Toggle, Settings
+        // Right: Car Mode Pill, Dedicated DND Pill, Sound/Vibrate/Mute Pill, Rotate Toggle, Settings
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
+            // Car Mode (Max Brightness) Button
+            Surface(
+                color = if (isCarModeEnabled) {
+                    MaterialTheme.colorScheme.primary.copy(alpha = 0.20f)
+                } else {
+                    OledSubtleSurface
+                },
+                border = BorderStroke(
+                    1.dp,
+                    if (isCarModeEnabled) MaterialTheme.colorScheme.primary.copy(alpha = 0.5f) else OledBorder
+                ),
+                shape = RoundedCornerShape(50),
+                modifier = Modifier
+                    .clip(RoundedCornerShape(50))
+                    .clickable(onClick = onToggleCarMode)
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 7.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.DirectionsCar,
+                        contentDescription = "Toggle Car Mode (Max Brightness)",
+                        tint = if (isCarModeEnabled) MaterialTheme.colorScheme.primary else TextSecondary,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "Car",
+                        style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp),
+                        color = if (isCarModeEnabled) MaterialTheme.colorScheme.primary else TextSecondary
+                    )
+                }
+            }
+
             // Dedicated DND Button
             Surface(
                 color = if (status.isDndActive) {

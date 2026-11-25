@@ -49,7 +49,7 @@ DroidDeck/
         │   │   │   │   ├── OngoingCallBanner.kt    # Pinned in-app active call timer, speaker, mute, end call
         │   │   │   │   ├── QuickAppDockCard.kt     # Borderless 4 configurable monochrome quick-launch apps
         │   │   │   │   ├── RecentCallsWidgetCard.kt# Standalone circular 4 recent calls widgets (1 row)
-        │   │   │   │   ├── StatusHeader.kt         # Exit button, battery, DND, ringer, rotate, settings
+        │   │   │   │   ├── StatusHeader.kt         # Exit button, battery, Car Mode, DND, ringer, rotate, settings
         │   │   │   │   └── WeatherWidgetCard.kt    # Legacy standalone weather card (replaced by ClockSection pill)
         │   │   │   ├── dashboard/
         │   │   │   │   ├── DashboardViewModel.kt   # Minute-aligned ticker, call/media timers, state
@@ -59,6 +59,7 @@ DroidDeck/
         │   │   │   └── theme/Theme.kt              # Pure #000000 OLED theme & Google Fonts provider
         │   │   └── util/
         │   │       ├── CallActionHelper.kt         # CallStyle PendingIntent + TelecomManager fallback
+│   │   │   │   │   ├── DndPolicyHelper.kt          # Sound-preserving popup-hiding NotificationManager.Policy
         │   │       ├── MediaProgressCalculator.kt  # Extrapolated live MediaSession playback position
         │   │       ├── PixelShiftCalculator.kt     # Bounded [-4, +4] dp burn-in protection
         │   │       └── WorkingHoursEvaluator.kt    # Day/time/charging schedule evaluator
@@ -79,6 +80,7 @@ DroidDeck/
             ├── CalendarCountdownTest.kt          # Unit tests for h/m calendar countdown formatting
             ├── MediaProgressCalculatorTest.kt      # Unit tests for live media progress extrapolation
             ├── PixelShiftCalculatorTest.kt         # Unit tests for OLED pixel shift bounds
+            ├── StatusMonitorRingerTest.kt          # Unit tests for DND-decoupled ringer state resolution
             ├── WidgetOrderTest.kt                  # Unit tests for widget order persistence
             └── WorkingHoursEvaluatorTest.kt        # Unit tests for working-hours schedule logic
 ```

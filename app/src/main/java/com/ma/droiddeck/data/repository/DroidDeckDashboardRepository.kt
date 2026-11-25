@@ -1,5 +1,6 @@
 package com.ma.droiddeck.data.repository
 
+import android.app.NotificationManager
 import com.ma.droiddeck.data.model.DeviceStatusState
 import com.ma.droiddeck.data.model.IncomingCallAlert
 import com.ma.droiddeck.data.model.MediaPlaybackState
@@ -38,6 +39,18 @@ class DroidDeckDashboardRepository private constructor() {
 
     @Volatile
     var isDashboardForeground: Boolean = false
+
+    @Volatile
+    var isPopupSuppressionDndActive: Boolean = false
+
+    @Volatile
+    var isUserQuietDndActive: Boolean = false
+
+    @Volatile
+    var savedSystemNotificationPolicy: NotificationManager.Policy? = null
+
+    @Volatile
+    var savedSystemInterruptionFilter: Int? = null
 
     private var mediaActionHandler: MediaActionHandler? = null
     private var notificationDismissHandler: ((String) -> Unit)? = null

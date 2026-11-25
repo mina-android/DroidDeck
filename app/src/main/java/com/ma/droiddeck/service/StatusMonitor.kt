@@ -162,21 +162,28 @@ class StatusMonitor(private val context: Context) {
 
     fun refreshDndState() {
         val filter = notificationManager.currentInterruptionFilter
-        val dndActive = filter != NotificationManager.INTERRUPTION_FILTER_ALL
+        val dndActive = if (filter == NotificationManager.INTERRUPTION_FILTER_ALL) {
+            repository.isPopupSuppressionDndActive = false
+            repository.isUserQuietDndActive = false
+            false
+        } else if (repository.isPopupSuppressionDndActive && !repository.isUserQuietDndActive) {
+            false
+        } else {
+            true
+        }
         repository.updateDeviceStatus { it.copy(isDndActive = dndActive) }
     }
 
     fun refreshRingerState() {
-        val isRingMuted = runCatching {
-            audioManager.isStreamMute(AudioManager.STREAM_RING) ||
-                audioManager.getStreamVolume(AudioManager.STREAM_RING) == 0
-        }.getOrDefault(false)
-        val mode = when {
-            audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT -> RingerModeState.MUTE
-            audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE -> RingerModeState.VIBRATE
-            isRingMuted -> RingerModeState.MUTE
-            else -> RingerModeState.SOUND
-        }
+        val isDndFilterActive = notificationManager.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL
+        val mode = resolveRingerMode(
+            systemRingerMode = audioManager.ringerMode,
+            isStreamRingMuted = runCatching {
+                audioManager.isStreamMute(AudioManager.STREAM_RING) ||
+                    audioManager.getStreamVolume(AudioManager.STREAM_RING) == 0
+            }.getOrDefault(false),
+            isDndActive = isDndFilterActive
+        )
         repository.updateDeviceStatus { it.copy(ringerMode = mode) }
     }
 
@@ -228,5 +235,16 @@ class StatusMonitor(private val context: Context) {
 
     companion object {
         private const val ACTION_VOLUME_CHANGED = "android.media.VOLUME_CHANGED_ACTION"
+
+        internal fun resolveRingerMode(
+            systemRingerMode: Int,
+            isStreamRingMuted: Boolean,
+            isDndActive: Boolean
+        ): RingerModeState = when {
+            systemRingerMode == AudioManager.RINGER_MODE_SILENT -> RingerModeState.MUTE
+            systemRingerMode == AudioManager.RINGER_MODE_VIBRATE -> RingerModeState.VIBRATE
+            !isDndActive && isStreamRingMuted -> RingerModeState.MUTE
+            else -> RingerModeState.SOUND
+        }
     }
 }

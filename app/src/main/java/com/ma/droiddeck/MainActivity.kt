@@ -37,6 +37,7 @@ import com.ma.droiddeck.ui.dashboard.DashboardViewModel
 import com.ma.droiddeck.ui.dashboard.DroidDeckScreen
 import com.ma.droiddeck.ui.theme.DroidDeckTheme
 import com.ma.droiddeck.util.CallActionHelper
+import com.ma.droiddeck.util.DndPolicyHelper
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
@@ -50,8 +51,6 @@ class MainActivity : ComponentActivity() {
     private val viewModel: DashboardViewModel by viewModels()
     private lateinit var statusMonitor: StatusMonitor
 
-    private var savedNotificationPolicy: NotificationManager.Policy? = null
-    private var savedInterruptionFilter: Int? = null
     private var isHeadsUpSuppressedByApp = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -151,6 +150,7 @@ class MainActivity : ComponentActivity() {
             }
 
             LaunchedEffect(
+                uiState.isCarModeEnabled,
                 uiState.settings.autoDimEnabled,
                 uiState.settings.dimBrightnessPercent,
                 uiState.isTemporarilyBrightened,
@@ -159,6 +159,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 val lp = window.attributes
                 lp.screenBrightness = when {
+                    uiState.isCarModeEnabled -> 1.0f
                     uiState.settings.proximityBlankingEnabled && uiState.isProximityCovered -> 0.0f
                     uiState.isTemporarilyBrightened -> 0.35f
                     uiState.settings.autoDimEnabled ->
@@ -221,6 +222,7 @@ class MainActivity : ComponentActivity() {
                             ).show()
                         }
                     },
+                    onToggleCarMode = { viewModel.toggleCarMode() },
                     onCycleRingerMode = {
                         val ok = viewModel.cycleRingerMode()
                         if (!ok) {
@@ -295,6 +297,10 @@ class MainActivity : ComponentActivity() {
         DroidDeckDashboardRepository.getInstance().isDashboardSessionActive = true
         statusMonitor.start()
         viewModel.refreshCalendarAndRecentCalls()
+        val state = viewModel.uiState.value
+        if (state.settings.suppressHeadsUpWhileActive && state.isDndAccessGranted) {
+            applyHeadsUpSuppression()
+        }
     }
 
     override fun onResume() {
@@ -331,6 +337,11 @@ class MainActivity : ComponentActivity() {
         super.onStop()
     }
 
+    override fun onDestroy() {
+        restoreHeadsUpSuppression()
+        super.onDestroy()
+    }
+
     private fun exitAppCompletely() {
         val repo = DroidDeckDashboardRepository.getInstance()
         repo.isDashboardSessionActive = false
@@ -346,49 +357,42 @@ class MainActivity : ComponentActivity() {
     private fun applyHeadsUpSuppression() {
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager ?: return
         if (!nm.isNotificationPolicyAccessGranted) return
+        val repo = DroidDeckDashboardRepository.getInstance()
         if (!isHeadsUpSuppressedByApp) {
-            savedNotificationPolicy = nm.notificationPolicy
-            savedInterruptionFilter = nm.currentInterruptionFilter
+            repo.savedSystemNotificationPolicy = nm.notificationPolicy
+            repo.savedSystemInterruptionFilter = nm.currentInterruptionFilter
+            if (nm.currentInterruptionFilter != NotificationManager.INTERRUPTION_FILTER_ALL) {
+                repo.isUserQuietDndActive = true
+            }
         }
         runCatching {
-            val base = nm.notificationPolicy
-            val suppressedEffects = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                base.suppressedVisualEffects or
-                    NotificationManager.Policy.SUPPRESSED_EFFECT_PEEK or
-                    NotificationManager.Policy.SUPPRESSED_EFFECT_FULL_SCREEN_INTENT
-            } else {
-                base.suppressedVisualEffects
+            if (!repo.isUserQuietDndActive) {
+                nm.notificationPolicy = DndPolicyHelper.buildPopupSuppressionPolicy(nm.notificationPolicy)
+                repo.isPopupSuppressionDndActive = true
+                nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY)
             }
-            val mediaCategory = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                NotificationManager.Policy.PRIORITY_CATEGORY_MEDIA or
-                    NotificationManager.Policy.PRIORITY_CATEGORY_SYSTEM
-            } else {
-                0
-            }
-            val newPolicy = NotificationManager.Policy(
-                base.priorityCategories or
-                    NotificationManager.Policy.PRIORITY_CATEGORY_ALARMS or
-                    mediaCategory,
-                base.priorityCallSenders,
-                base.priorityMessageSenders,
-                suppressedEffects
-            )
-            nm.notificationPolicy = newPolicy
-            // Never auto-enable DND (INTERRUPTION_FILTER_PRIORITY) on launch so DND and media stay untouched.
             isHeadsUpSuppressedByApp = true
         }
     }
 
     private fun restoreHeadsUpSuppression() {
         if (!isHeadsUpSuppressedByApp) return
+        val repo = DroidDeckDashboardRepository.getInstance()
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager ?: return
         if (!nm.isNotificationPolicyAccessGranted) {
             isHeadsUpSuppressedByApp = false
+            repo.isPopupSuppressionDndActive = false
             return
         }
         runCatching {
-            savedNotificationPolicy?.let { nm.notificationPolicy = it }
+            repo.savedSystemNotificationPolicy?.let { nm.notificationPolicy = it }
+            if (repo.isPopupSuppressionDndActive && !repo.isUserQuietDndActive) {
+                val targetFilter = repo.savedSystemInterruptionFilter
+                    ?: NotificationManager.INTERRUPTION_FILTER_ALL
+                nm.setInterruptionFilter(targetFilter)
+            }
         }
+        repo.isPopupSuppressionDndActive = false
         isHeadsUpSuppressedByApp = false
     }
 

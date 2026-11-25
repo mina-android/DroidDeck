@@ -10,7 +10,7 @@ README UNIVERSAL TEMPLATE SPECIFICATION & APPLIED RULES
 
 # DroidDeck
 
-[![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B-3DDC84?style=flat&logo=android&logoColor=white)](https://developer.android.com/about/versions/oreo) [![Framework](https://img.shields.io/badge/Framework-Jetpack%20Compose-4285F4?style=flat&logo=kotlin&logoColor=white)](https://developer.android.com/compose) [![Release](https://img.shields.io/badge/Release-v1.0.0-blue?style=flat)](https://github.com/mina-android/DroidDeck/releases) [![License](https://img.shields.io/badge/License-GPL--3.0-black?style=flat)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Android%208.0%2B-3DDC84?style=flat&logo=android&logoColor=white)](https://developer.android.com/about/versions/oreo) [![Framework](https://img.shields.io/badge/Framework-Jetpack%20Compose-4285F4?style=flat&logo=kotlin&logoColor=white)](https://developer.android.com/compose) [![Release](https://img.shields.io/badge/Release-v1.1.0-blue?style=flat)](https://github.com/mina-android/DroidDeck/releases) [![License](https://img.shields.io/badge/License-GPL--3.0-black?style=flat)](LICENSE)
 
 <p align="center">
   An Always-On Display (AOD) desk dashboard and control center for Android. Built natively in Kotlin and Jetpack Compose with a strict #000000 pure-black OLED interface, adaptive portrait/landscape layouts, media controls, notification pills, incoming and ongoing call handling, and working-hours lockscreen automation.
@@ -33,9 +33,9 @@ README UNIVERSAL TEMPLATE SPECIFICATION & APPLIED RULES
 - **Pure `#000000` OLED Adaptive Dashboard**: Switches between a vertical 1-column Portrait layout and a 2-column Landscape grid with cross-column drag-and-drop widget reordering (`CLOCK`, `RECENT_CALLS`, `MUSIC_CONTROLS`, `NOTIFICATIONS`, `QUICK_APPS`) and `1.dp` `#1F1F1F` outlines.
 - **Zero-Bridge Media, Volume & Notification Engine**: `DroidDeckNotificationService` binds directly to Android's `NotificationListenerService` and `MediaSessionManager` to render active track metadata, dimmed monochrome artwork, live-extrapolated playback progress with interactive seekbar scrubbing, transport controls, Media Volume slider, and up to 5 dismissible notification pills with app blacklisting and DND-aware hiding.
 - **Interactive Incoming & Ongoing Call Controls**: Detects `Notification.CATEGORY_CALL` alerts from cellular dialers and VoIP apps, surfacing pinned Answer/Decline/Mute Ringer and Ongoing Call banners directly above the Clock with live duration, Speakerphone toggle, Mic Mute toggle, and End Call actions via `TelecomManager` and `Notification.CallStyle`.
-- **Battery & OLED Burn-In Protection**: Aligns clock updates to exact minute boundaries when seconds are disabled (0 FPS idle rendering), applies deterministic `[-4, +4]` dp pixel shifting every minute, dims screen brightness from `1%` to `100%` with tap-to-brighten, and blanks the display via `Sensor.TYPE_PROXIMITY` when covered.
+- **Battery & OLED Burn-In Protection**: Aligns clock updates to exact minute boundaries when seconds are disabled (0 FPS idle rendering), applies deterministic `[-4, +4]` dp pixel shifting every minute, dims screen brightness from `1%` to `100%` with tap-to-brighten, and blanks the display via `Sensor.TYPE_PROXIMITY` when covered (unless Car Mode is active).
 - **Working Hours & Lockscreen Automation**: `WorkingHoursLockService` monitors `ACTION_SCREEN_OFF` broadcasts and presents `MainActivity` over the lockscreen during user-configured days, time windows, and optional charging states, with a toggle to disable lockscreen presentation.
-- **System Entry Points & Desk Utilities**: Includes a Quick Settings Tile (`DroidDeckTileService`), a top-left Exit action, a Sound/Vibrate/Mute ringer cycling pill decoupled from DND, a persisted Portrait/Landscape/Auto orientation toggle, 4 deduplicated circular Recent Contacts shortcuts, borderless Quick App shortcuts, embedded Clock weather and Calendar (`Xh Ym` countdown), Google Fonts selection, and a built-in Pomodoro timer.
+- **System Entry Points & Desk Utilities**: Includes a Quick Settings Tile (`DroidDeckTileService`), a top-left Exit action, a session-only **Car Mode** max-brightness toggle (`StatusHeader`), a **Sound-Preserving Popup-Hiding DND Mode** (`Suppress System Heads-Up Popups`) that hides Android popups while keeping sound on and notifications visible in-app (auto-restoring on app close), a Sound/Vibrate/Mute ringer cycling pill decoupled from DND, a persisted Portrait/Landscape/Auto orientation toggle, 4 deduplicated circular Recent Contacts shortcuts, borderless Quick App shortcuts, embedded Clock weather and Calendar (`Xh Ym` countdown), Google Fonts selection, and a built-in Pomodoro timer.
 
 ### Architecture & Data Handling
 
@@ -69,11 +69,11 @@ Official release packages are published under the [GitHub Releases](https://gith
 
 | Platform | Architecture | Package Type | Download Link | Notes |
 | :--- | :--- | :--- | :--- | :--- |
-| **Android** | `arm64-v8a` | `.apk` | [Download (v1.0.0)](https://github.com/mina-android/DroidDeck/releases/latest) | Modern 64-bit devices (recommended) |
-| **Android** | `armeabi-v7a` | `.apk` | [Download (v1.0.0)](https://github.com/mina-android/DroidDeck/releases/latest) | Legacy 32-bit devices |
-| **Android** | `x86_64` | `.apk` | [Download (v1.0.0)](https://github.com/mina-android/DroidDeck/releases/latest) | Android emulators and Intel-based tablets |
-| **Android** | `x86` | `.apk` | [Download (v1.0.0)](https://github.com/mina-android/DroidDeck/releases/latest) | Legacy 32-bit x86 emulators |
-| **Android** | Universal | `.apk` | [Download (v1.0.0)](https://github.com/mina-android/DroidDeck/releases/latest) | Combined installer supporting all architectures |
+| **Android** | `arm64-v8a` | `.apk` | [Download (v1.1.0)](https://github.com/mina-android/DroidDeck/releases/latest) | Modern 64-bit devices (recommended) |
+| **Android** | `armeabi-v7a` | `.apk` | [Download (v1.1.0)](https://github.com/mina-android/DroidDeck/releases/latest) | Legacy 32-bit devices |
+| **Android** | `x86_64` | `.apk` | [Download (v1.1.0)](https://github.com/mina-android/DroidDeck/releases/latest) | Android emulators and Intel-based tablets |
+| **Android** | `x86` | `.apk` | [Download (v1.1.0)](https://github.com/mina-android/DroidDeck/releases/latest) | Legacy 32-bit x86 emulators |
+| **Android** | Universal | `.apk` | [Download (v1.1.0)](https://github.com/mina-android/DroidDeck/releases/latest) | Combined installer supporting all architectures |
 
 ---
 

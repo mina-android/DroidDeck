@@ -33,6 +33,7 @@ import com.ma.droiddeck.data.repository.CalendarWeatherRepository
 import com.ma.droiddeck.service.DroidDeckNotificationService
 import com.ma.droiddeck.service.WorkingHoursLockService
 import com.ma.droiddeck.util.CallActionHelper
+import com.ma.droiddeck.util.DndPolicyHelper
 import com.ma.droiddeck.util.MediaProgressCalculator
 import com.ma.droiddeck.util.PixelShiftCalculator
 import kotlinx.coroutines.Job
@@ -70,7 +71,8 @@ data class DashboardUiState(
     val isCalendarGranted: Boolean = false,
     val isCallLogGranted: Boolean = false,
     val isTemporarilyBrightened: Boolean = false,
-    val isIdleBurnInDimmed: Boolean = false
+    val isIdleBurnInDimmed: Boolean = false,
+    val isCarModeEnabled: Boolean = false
 )
 
 /**
@@ -101,6 +103,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     private val _hasCallLog = MutableStateFlow(hasPermission(Manifest.permission.READ_CALL_LOG))
     private val _isTemporarilyBrightened = MutableStateFlow(false)
     private val _isIdleBurnInDimmed = MutableStateFlow(false)
+    private val _isCarModeEnabled = MutableStateFlow(false)
 
     private var clockJob: Job? = null
     private var mediaProgressJob: Job? = null
@@ -120,6 +123,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         _hasCallLog,
         _isTemporarilyBrightened,
         _isIdleBurnInDimmed,
+        _isCarModeEnabled,
         _recentCalls,
         _nextCalendarEvent,
         _weather,
@@ -134,10 +138,11 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
             callLog = arr[4] as Boolean,
             brightened = arr[5] as Boolean,
             burnInDimmed = arr[6] as Boolean,
-            recentCalls = arr[7] as List<RecentCallEntry>,
-            nextEvent = arr[8] as CalendarEventSummary?,
-            weather = arr[9] as WeatherState,
-            installedApps = arr[10] as List<QuickAppEntry>
+            carMode = arr[7] as Boolean,
+            recentCalls = arr[8] as List<RecentCallEntry>,
+            nextEvent = arr[9] as CalendarEventSummary?,
+            weather = arr[10] as WeatherState,
+            installedApps = arr[11] as List<QuickAppEntry>
         )
     }
 
@@ -194,7 +199,8 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
             isCalendarGranted = extras.calendar,
             isCallLogGranted = extras.callLog,
             isTemporarilyBrightened = extras.brightened,
-            isIdleBurnInDimmed = extras.burnInDimmed
+            isIdleBurnInDimmed = extras.burnInDimmed,
+            isCarModeEnabled = extras.carMode
         )
     }.stateIn(
         scope = viewModelScope,
@@ -375,17 +381,36 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    fun toggleCarMode() {
+        _isCarModeEnabled.value = !_isCarModeEnabled.value
+    }
+
     fun toggleDnd(): Boolean {
         if (!checkDndPolicyAccess()) return false
         val nm = app.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager ?: return false
-        val nextFilter = if (nm.currentInterruptionFilter == NotificationManager.INTERRUPTION_FILTER_ALL) {
-            NotificationManager.INTERRUPTION_FILTER_PRIORITY
+        val enablingQuietDnd = !repository.deviceStatus.value.isDndActive
+        if (enablingQuietDnd) {
+            repository.isPopupSuppressionDndActive = false
+            repository.isUserQuietDndActive = true
+            runCatching {
+                repository.savedSystemNotificationPolicy?.let { nm.notificationPolicy = it }
+            }
+            nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY)
         } else {
-            NotificationManager.INTERRUPTION_FILTER_ALL
+            repository.isUserQuietDndActive = false
+            if (uiState.value.settings.suppressHeadsUpWhileActive) {
+                runCatching {
+                    nm.notificationPolicy = DndPolicyHelper.buildPopupSuppressionPolicy(nm.notificationPolicy)
+                }
+                repository.isPopupSuppressionDndActive = true
+                nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_PRIORITY)
+            } else {
+                repository.isPopupSuppressionDndActive = false
+                nm.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+            }
         }
-        nm.setInterruptionFilter(nextFilter)
         repository.updateDeviceStatus {
-            it.copy(isDndActive = nextFilter != NotificationManager.INTERRUPTION_FILTER_ALL)
+            it.copy(isDndActive = enablingQuietDnd)
         }
         return true
     }
@@ -633,6 +658,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
         val callLog: Boolean,
         val brightened: Boolean,
         val burnInDimmed: Boolean,
+        val carMode: Boolean,
         val recentCalls: List<RecentCallEntry>,
         val nextEvent: CalendarEventSummary?,
         val weather: WeatherState,
