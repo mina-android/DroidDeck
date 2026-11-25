@@ -13,7 +13,9 @@ DroidDeck/
 ├── gradle.properties                               # JVM, AndroidX, and Kotlin style flags
 ├── settings.gradle.kts                             # Module configuration (DroidDeck)
 ├── assets/
-│   └── logo.png                                    # 3D Material 3 application logo
+│   ├── logo.png                                    # 3D Material 3 application logo
+│   └── screenshots/
+│       └── home.png                                # Main dashboard screenshot used in README.md
 ├── gradle/
 │   ├── libs.versions.toml                          # Centralized dependency version catalog
 │   └── wrapper/

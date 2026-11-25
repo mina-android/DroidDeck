@@ -47,19 +47,9 @@ README UNIVERSAL TEMPLATE SPECIFICATION & APPLIED RULES
 
 ## Screenshots
 
-<table width="100%" border="0" cellspacing="0" cellpadding="4">
-  <tr>
-    <td width="33.33%" align="center" valign="top">
-      <img src="assets/screenshots/main-dashboard.png" alt="Main Interface" width="100%" />
-    </td>
-    <td width="33.33%" align="center" valign="top">
-      <img src="assets/screenshots/configuration-view.png" alt="Configuration Panel" width="100%" />
-    </td>
-    <td width="33.33%" align="center" valign="top">
-      <img src="assets/screenshots/data-inspection.png" alt="Data Inspection View" width="100%" />
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <img src="assets/screenshots/home.png" alt="DroidDeck Home Dashboard" width="720" />
+</p>
 
 ---
 
